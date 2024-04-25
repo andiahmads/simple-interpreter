@@ -91,9 +91,11 @@ fn tokenizer(source_code: &str) -> Vec<Token> {
                 position += 1;
                 while position < source_code.len() {
                     let next_char = source_code.chars().nth(position).unwrap();
-                    if !next_char.is_numeric() {
+
+                    if !is_valid_identifier(next_char) {
                         break;
                     }
+
                     lexeme.push(next_char);
                     position += 1;
                 }
@@ -109,8 +111,13 @@ fn tokenizer(source_code: &str) -> Vec<Token> {
     return result;
 }
 
+// handle case nama variable mengandung "_"
+fn is_valid_identifier(ch: char) -> bool {
+    return ch.is_alphanumeric() || ch == '_';
+}
+
 fn main() {
-    let src = "a = 123 
+    let src = "a_123 = 123 
             print(a)";
 
     let tokens = tokenizer(src);
